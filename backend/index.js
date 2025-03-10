@@ -40,6 +40,26 @@ app.get('/tasks', async (req, res) => {
     }
 });
 
+app.post('/post', async (req,res) => {
+    console.log("posting tasks....")
+    const data = req.body;
+    if(!data.title||!data.dueDate||!data.priority||!data.status){
+        return res.status(400).json({Message:"All fields are needed"}) 
+    }
+    try{
+    await Task.create({
+      title:data.title,
+      dueDate:data.dueDate,
+      priority: data.priority,
+      status: data.status
+    })
+    res.status(201).json({Message:"Created"});
+}
+catch(err){
+    res.status(500).json({Message:"There was an error that occured!", error: err})
+}
+})
+
 
 // Write an endpoint to create a new task.
 
